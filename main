@@ -1,0 +1,77 @@
+
+void afficherVoiture(struct Voiture v) {
+    printf("Marque: %s\n", v.marque);
+    printf("Modele: %s\n", v.modele);
+    printf("Annee: %d\n", v.annee);
+    printf("Prix par jour: %.2f\n", v.prixParJour);
+    if (v.disponible) {
+        printf("Statut: Disponible\n");
+    } else {
+        printf("Statut: Louer\n");
+    }
+}
+
+
+void afficherVoituresDisponibles(struct Voiture voitures[], int n) {
+    int i;
+    int trouve = 0;
+
+    for (i = 0; i < n; i++) {
+        if (voitures[i].disponible) {
+            afficherVoiture(voitures[i]);
+            printf("\n");
+            trouve = 1;
+        }
+    }
+
+    if (!trouve) {
+        printf("Aucune voiture disponible.\n");
+    }
+}
+
+
+void louerVoiture(struct Voiture voitures[], int n) {
+    int index;
+    int jours;
+
+    afficherVoituresDisponibles(voitures, n);
+
+
+    printf("Entrez l'index de la voiture a louer (1  %d): ", n);
+    scanf("%d", &index);
+
+
+    if (index >= 1 && index <= n && voitures[index - 1].disponible) {
+        printf("Entrez le nombre de jours de location: ");
+        scanf("%d", &jours);
+
+
+        voitures[index - 1].disponible = 0;
+
+
+        printf("Vous avez louer la voiture %s %s pour %d jour(s). Le montant total a payer est %.2f.\n",
+               voitures[index - 1].marque, voitures[index - 1].modele, jours,
+               voitures[index - 1].prixParJour * jours);
+    } else {
+        printf("Voiture non disponible ou index invalide.\n");
+    }
+}
+
+
+void rendreVoiture(struct Voiture voitures[], int n) {
+    int index;
+
+    printf("Entrez l'index de la voiture a rendre (1  %d): ", n);
+    scanf("%d", &index);
+
+
+    if (index >= 1 && index <= n && !voitures[index - 1].disponible) {
+
+        voitures[index - 1].disponible = 1;
+        printf("La voiture %s %s  t rendue avec succes. Elle est maintenant disponible.\n",
+               voitures[index - 1].marque, voitures[index - 1].modele);
+    } else {
+        printf("Voiture non trouve ou non louer.\n");
+    }
+}
+
